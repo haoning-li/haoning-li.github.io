@@ -175,7 +175,8 @@ header .tagline {
 .email { margin-bottom: 0.15rem; }
 .email a, .links a, .certificate-link a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: 0.2em; }
 .profile-note { font-size: 0.9rem; font-weight: 400; color: var(--muted); margin: 0.35rem 0 0; }
-.hobbies-text { max-width: 900px; }
+.hobbies-text { max-width: 980px; }
+.hobbies-emoji { display: inline-block; white-space: nowrap; }
 .photos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .travel-photos { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 1.2rem; }
 .travel-photos img { aspect-ratio: 16 / 9; }
