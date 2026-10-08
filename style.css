@@ -1,0 +1,151 @@
+/* ============================================================
+   Haoning Li — personal academic website
+   One stylesheet for all three pages.
+   Colours: change the two values below to re-theme the site.
+   ============================================================ */
+:root {
+  --bg: #f7f5f0;        /* plain background (warm paper) */
+  --text: #222222;
+  --muted: #6b6b6b;
+  --accent: #1f6f6b;    /* the single accent colour (teal) */
+  --rule: #d9d5cc;
+  --max: 780px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 1.25rem; }
+
+a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; }
+a:hover { border-bottom-color: var(--accent); }
+
+/* ---------- header ---------- */
+header { padding: 2.75rem 0 0; text-align: center; }
+header .name { font-size: 2.3rem; font-weight: 600; letter-spacing: 0.02em; margin: 0; }
+header .tagline {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.85rem; color: var(--muted); margin: 0.35rem 0 0; letter-spacing: 0.03em;
+}
+
+/* ---------- navigation: game-menu style cursor ---------- */
+nav { margin: 1.6rem 0 0; border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
+nav ul { list-style: none; margin: 0; padding: 0.55rem 0; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.3rem 2rem; }
+nav a {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 0.9rem; color: var(--text); position: relative; padding-left: 1.1em; border: 0;
+}
+nav a::before {               /* the ▶ cursor */
+  content: "▶"; position: absolute; left: 0; top: 0.1em;
+  font-size: 0.7em; color: var(--accent); opacity: 0; transition: opacity 0.15s;
+}
+nav a:hover::before, nav a[aria-current="page"]::before { opacity: 1; }
+nav a[aria-current="page"] { color: var(--accent); }
+
+/* ---------- sections ---------- */
+main { padding: 1rem 0 2rem; }
+h2 {
+  font-size: 1.05rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em;
+  margin: 2.4rem 0 0.9rem; padding-bottom: 0.3rem; border-bottom: 2px solid var(--accent);
+}
+h3 { font-size: 1rem; font-style: italic; font-weight: 400; color: var(--muted); margin: 1.4rem 0 0.5rem; }
+p { margin: 0 0 1rem; }
+
+/* ---------- home: photo + about ---------- */
+.intro { display: flex; gap: 1.75rem; align-items: flex-start; margin-top: 2rem; }
+.intro .photo { flex: 0 0 170px; }
+.intro .photo img, .placeholder-photo { width: 170px; height: 210px; object-fit: cover; border-radius: 4px; }
+.intro .about p:last-child { margin-bottom: 0; }
+
+/* ---------- lists ---------- */
+ul.plain { list-style: none; padding: 0; margin: 0; }
+ul.plain li { margin: 0 0 0.45rem; }
+.date { color: var(--muted); white-space: nowrap; }
+
+/* references with hanging indent (APA) */
+ul.refs { list-style: none; padding: 0; margin: 0; }
+ul.refs > li { padding-left: 2em; text-indent: -2em; margin: 0 0 0.8rem; }
+ul.refs ul { list-style: disc; text-indent: 0; padding-left: 1.2em; margin: 0.3rem 0 0; }
+
+/* dated entries: text left, date right */
+.entry { display: flex; justify-content: space-between; gap: 1.5rem; margin: 0 0 0.6rem; }
+.entry .date { flex: 0 0 auto; }
+.entry .sub { display: block; color: var(--muted); font-size: 0.95em; }
+.group-title { margin: 1rem 0 0.4rem; }
+ul.courses { margin: 0 0 0.9rem; padding-left: 1.2em; }
+ul.courses li { margin: 0 0 0.35rem; }
+
+/* links row */
+.links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; padding: 0; margin: 0; list-style: none; }
+.links .todo { color: var(--muted); opacity: 0.6; }
+
+/* ---------- photos row ---------- */
+.photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin-top: 0.5rem; }
+.photos figure { margin: 0; }
+.photos img, .placeholder-img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px; display: block; }
+.photos figcaption { font-size: 0.85rem; color: var(--muted); margin-top: 0.3rem; }
+
+/* placeholders (remove once real photos are added) */
+.placeholder-photo, .placeholder-img {
+  background: repeating-linear-gradient(45deg, #ebe7de, #ebe7de 8px, #e3dfd5 8px, #e3dfd5 16px);
+  display: flex; align-items: center; justify-content: center;
+  font-family: "IBM Plex Mono", monospace; font-size: 0.8rem; color: var(--muted);
+}
+.todo-note { color: var(--muted); font-style: italic; }
+
+/* ---------- footer ---------- */
+footer { border-top: 1px solid var(--rule); padding: 1.2rem 0 2.5rem; font-size: 0.85rem; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+footer a { font-family: "IBM Plex Mono", monospace; }
+
+/* ---------- small screens ---------- */
+@media (max-width: 620px) {
+  body { font-size: 17px; }
+  .intro { flex-direction: column; align-items: center; }
+  .entry { flex-direction: column; gap: 0; }
+  nav ul { gap: 0.3rem 1.2rem; }
+}
+
+/* ---------- quiet corner decorations, shared by all pages ---------- */
+body { position: relative; isolation: isolate; }
+body::before, body::after {
+  content: ""; position: absolute; top: 0;
+  width: clamp(100px, calc((100vw - 800px) / 2), 320px);
+  height: 840px; pointer-events: none; z-index: -1;
+  background-repeat: no-repeat; background-size: 100% auto;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 35%, transparent 96%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 35%, transparent 96%);
+}
+body::before { left: 0; background-image: url("decor-controllers.svg"); }
+body::after { right: 0; background-image: url("decor-caps.svg"); }
+.about { flex: 1; min-width: 0; }
+.about-placeholder { min-height: 350px; padding-top: 0.2rem; }
+.pub-links { text-indent: 0; margin: 0.45rem 0 0; font-size: 0.9em; }
+.pub-links a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: 0.2em; }
+.link-pending { color: var(--muted); font-style: italic; }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+nav a { display: inline-flex; align-items: center; min-height: 44px; }
+nav a::before { top: 50%; transform: translateY(-50%); }
+footer a { display: inline-flex; align-items: center; min-height: 44px; }
+@media (max-width: 900px) {
+  body::before, body::after { height: 150px; width: 90px; opacity: 0.65; }
+}
+@media (max-width: 620px) {
+  header .tagline { font-size: 0.875rem; letter-spacing: 0; }
+  .intro .about { width: 100%; }
+  .about-placeholder { min-height: 260px; }
+  body::before, body::after { width: 64px; height: 100px; opacity: 0.45; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  nav a::before { transition: none; }
+}
