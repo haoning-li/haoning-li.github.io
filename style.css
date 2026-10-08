@@ -64,7 +64,7 @@ p { margin: 0 0 1rem; }
 /* ---------- home: photo + about ---------- */
 .intro { display: flex; gap: 1.75rem; align-items: flex-start; margin-top: 2rem; }
 .intro .photo { flex: 0 0 170px; }
-.intro .photo img, .placeholder-photo { width: 170px; height: 210px; object-fit: cover; border-radius: 4px; }
+.intro .photo img { width: 170px; height: 210px; object-fit: cover; border-radius: 4px; }
 .intro .about p:last-child { margin-bottom: 0; }
 
 /* ---------- lists ---------- */
@@ -87,21 +87,12 @@ ul.courses li { margin: 0 0 0.35rem; }
 
 /* links row */
 .links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; padding: 0; margin: 0; list-style: none; }
-.links .todo { color: var(--muted); opacity: 0.6; }
 
 /* ---------- photos row ---------- */
 .photos { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; margin-top: 0.5rem; }
 .photos figure { margin: 0; }
-.photos img, .placeholder-img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px; display: block; }
+.photos img { width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 4px; display: block; }
 .photos figcaption { font-size: 0.85rem; color: var(--muted); margin-top: 0.3rem; }
-
-/* placeholders (remove once real photos are added) */
-.placeholder-photo, .placeholder-img {
-  background: repeating-linear-gradient(45deg, #ebe7de, #ebe7de 8px, #e3dfd5 8px, #e3dfd5 16px);
-  display: flex; align-items: center; justify-content: center;
-  font-family: "IBM Plex Mono", monospace; font-size: 0.8rem; color: var(--muted);
-}
-.todo-note { color: var(--muted); font-style: italic; }
 
 /* ---------- footer ---------- */
 footer { border-top: 1px solid var(--rule); padding: 1.2rem 0 2.5rem; font-size: 0.85rem; color: var(--muted); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
@@ -128,10 +119,8 @@ body::before, body::after {
 body::before { left: 0; background-image: url("decor-controllers.svg"); }
 body::after { right: 0; background-image: url("decor-caps.svg"); }
 .about { flex: 1; min-width: 0; }
-.about-placeholder { min-height: 350px; padding-top: 0.2rem; }
 .pub-links { text-indent: 0; margin: 0.45rem 0 0; font-size: 0.9em; }
 .pub-links a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: 0.2em; }
-.link-pending { color: var(--muted); font-style: italic; }
 a:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
 nav a { display: inline-flex; align-items: center; min-height: 44px; }
 nav a::before { top: 50%; transform: translateY(-50%); }
@@ -142,7 +131,6 @@ footer a { display: inline-flex; align-items: center; min-height: 44px; }
 @media (max-width: 620px) {
   header .tagline { font-size: 0.875rem; letter-spacing: 0; }
   .intro .about { width: 100%; }
-  .about-placeholder { min-height: 260px; }
   body::before, body::after { width: 64px; height: 100px; opacity: 0.45; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -168,4 +156,40 @@ svg.identity-icon { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-
 }
 @media (prefers-reduced-motion: reduce) {
   .identity, .identity-icon { transition: none; }
+}
+
+/* ---------- content-filled edition ---------- */
+header .tagline {
+  font-family: "Source Serif 4", Georgia, serif;
+  font-size: 1.25rem; font-weight: 600; letter-spacing: 0.01em;
+  color: #4d5655;
+}
+.intro { gap: 2rem; }
+.intro .photo { flex-basis: 180px; }
+.intro .photo img { width: 180px; height: auto; display: block; border-radius: 4px; }
+.about { max-width: 790px; }
+.about a { text-decoration: underline; text-underline-offset: 0.15em; }
+.photo-link { display: block; border: 0; border-radius: 4px; }
+.photo-link:hover { border: 0; }
+.photo-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.email { margin-bottom: 0.15rem; }
+.email a, .links a, .certificate-link a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: 0.2em; }
+.profile-note { font-size: 0.9rem; font-weight: 400; color: var(--muted); margin: 0.35rem 0 0; }
+.hobbies-text { max-width: 900px; }
+.photos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.travel-photos { grid-template-columns: repeat(4, minmax(0, 1fr)); margin-top: 1.2rem; }
+.travel-photos img { aspect-ratio: 16 / 9; }
+.conference-photos img { aspect-ratio: 4 / 3; }
+.conference-photos .cdigra-photo { object-position: 70% center; }
+.conference-photos .malta-photo { object-position: center 65%; }
+.photos figcaption { font-size: 0.9rem; line-height: 1.45; margin-top: 0.5rem; }
+@media (max-width: 900px) {
+  .travel-photos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 620px) {
+  header .tagline { font-size: 1.15rem; }
+  .intro .photo { flex-basis: auto; }
+  .intro .photo img { width: 160px; }
+  .intro { gap: 1.5rem; }
+  .conference-photos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
