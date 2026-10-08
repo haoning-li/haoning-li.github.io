@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=hobbies-r8">
+<link rel="stylesheet" href="style.css?v=share-r11">
 </head>
 <body id="top">
 <div class="wrap">
@@ -38,10 +38,13 @@
 <section class="intro" aria-label="About Haoning Li">
   <div class="photo"><button type="button" class="photo-link" data-full-image="images/portrait-large.webp" aria-haspopup="dialog" aria-label="View larger portrait of Haoning Li"><img src="images/portrait.webp" width="540" height="958" fetchpriority="high" decoding="sync" alt="Haoning Li beneath flowering trees"></button></div>
   <div class="about"><p>I am a PhD candidate in Applied Linguistics at the <a href="https://www.qmul.ac.uk/arts/">School of the Arts, Queen Mary University of London</a>, where I am in the final stage of writing up my thesis. During my PhD, I have developed a particular interest in looking into social media and video games from a social semiotic perspective, including how users interact with them. My PhD research examines how character-centric discourse is built into the interface interactivity of gacha games, which offers insight into how character progression is recontextualised within these games. I am also interested in fandom and popular culture, game translation and localisation, and broader digital media ecosystems—interests that extend to game design, digital humanities and human–computer interaction.</p>
+<p>My PhD research primarily draws on multimodal discourse analysis and close reading to examine games. Beyond my PhD project, I also have experience working with methods from corpus linguistics and using Python and R to support literature review and explore textual data.</p>
 <p>Before my PhD, I completed a Master of Translation and Interpreting at Beijing International Studies University with a focus on multimodality and interactivity in game localisation and worked as a lecturer at Tangshan Vocational &amp; Technical College, where I taught College English and was responsible for class management and student mentoring. At Queen Mary, I currently teach academic reading and writing in the Department of International Education, and I am an Associate Fellow of the Higher Education Academy (AFHEA).</p></div>
 </section>
 
 <h2 id="contact">Contact</h2>
+<div class="contact-layout">
+<div class="contact-main">
 <div class="email-addresses">
 <p class="email">Working email: <a href="mailto:haoning.li@qmul.ac.uk">haoning.li@qmul.ac.uk</a></p>
 <p class="email">Personal email: <a href="mailto:haoningli.hnl@gmail.com">haoningli.hnl@gmail.com</a></p>
@@ -52,6 +55,16 @@
   <li><a href="https://orcid.org/0009-0002-2025-0851">ORCID</a></li>
 </ul>
 <p class="profile-note">“I’m sometimes a little slow to update these profiles.” ☺️</p>
+</div>
+<div class="contact-share">
+<div class="share-actions"><span class="share-label">Share</span><button type="button" class="share-button" id="share-homepage" aria-label="Copy name and homepage link" title="Copy name and homepage link"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M8.4 10.8l7.2-4.1M8.4 13.2l7.2 4.1"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="5.5" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/></svg></button></div>
+<p class="share-status" id="share-status" role="status" aria-live="polite" hidden></p>
+<div class="share-fallback" id="share-fallback" hidden>
+  <label for="share-link">Copy this name and link:</label>
+  <input id="share-link" type="text" value="Haoning Li — https://haoning-li.github.io/" readonly>
+</div>
+</div>
+</div>
 
 <h2 id="hobbies">Hobbies</h2>
 <p class="hobbies-text">I like swimming and can swim at a competitive level. I enjoy gacha games such as <i>Genshin Impact</i> and <i>Fate/Grand Order</i>, as well as other well-known games like <i>Euro Truck Simulator 2</i>, <i>Elden Ring</i> and <i>No Man’s Sky</i>. I enjoy watching Japanese anime and am a huge fan of the <i>JoJo’s Bizarre Adventure</i> series. I also enjoy travelling and taking photographs, and I’m particularly fond of the houses and streetscapes in quiet neighbourhoods. <span class="hobbies-emoji" role="img" aria-label="A house between two trees">🌳🏡🌳</span></p>
@@ -109,6 +122,51 @@
   viewer.addEventListener('close', () => {
     document.body.classList.remove('viewer-open');
     if (trigger) trigger.focus({preventScroll: true});
+  });
+})();
+</script>
+<script>
+(() => {
+  const button = document.querySelector('#share-homepage');
+  if (!button) return;
+  const status = document.querySelector('#share-status');
+  const fallback = document.querySelector('#share-fallback');
+  const field = document.querySelector('#share-link');
+  const shareText = 'Haoning Li — https://haoning-li.github.io/';
+  button.addEventListener('click', async () => {
+    button.disabled = true;
+    status.hidden = true;
+    fallback.hidden = true;
+    let copied = false;
+    try {
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+        await navigator.clipboard.writeText(shareText);
+        copied = true;
+      }
+    } catch (_) { /* Try the legacy copy path below. */ }
+    if (!copied) {
+      const temporary = document.createElement('textarea');
+      temporary.value = shareText;
+      temporary.readOnly = true;
+      temporary.setAttribute('aria-hidden', 'true');
+      temporary.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0';
+      document.body.appendChild(temporary);
+      temporary.select();
+      temporary.setSelectionRange(0, shareText.length);
+      try { copied = document.execCommand('copy'); } catch (_) { copied = false; }
+      temporary.remove();
+    }
+    button.disabled = false;
+    status.hidden = false;
+    if (copied) {
+      status.textContent = 'Copied name and link — ready to share.';
+      button.focus({preventScroll: true});
+    } else {
+      status.textContent = 'Automatic copying is unavailable. Please copy the selected text below.';
+      fallback.hidden = false;
+      field.focus({preventScroll: true});
+      field.select();
+    }
   });
 })();
 </script>
