@@ -79,11 +79,11 @@
   <li>British Association for Applied Linguistics (BAAL)</li>
 </ul>
 
-<h2 id="conference-photos">At Conferences</h2>
+<h2 id="conference-photos">Conference Moments</h2>
 <div class="photos conference-photos">
-<figure><a class="photo-link" href="images/esflc-large.webp" aria-label="View larger photo: ESFLC 34, Gothenburg, 2026"><img src="images/esflc.webp" width="720" height="537" loading="eager" decoding="sync" alt="Speaker pointing to the projected slides at ESFLC 34"></a><figcaption>ESFLC 34, Gothenburg, 2026</figcaption></figure>
-<figure><a class="photo-link" href="images/cdigra-large.webp" aria-label="View larger photo: Chinese DiGRA, Shanghai, 2025"><img src="images/cdigra.webp" width="720" height="540" loading="eager" decoding="sync" alt="Speaker presenting at the NYU Shanghai podium" class="cdigra-photo"></a><figcaption>Chinese DiGRA, Shanghai, 2025</figcaption></figure>
-<figure><a class="photo-link" href="images/malta-large.webp" aria-label="View larger photo: Malta"><img src="images/malta.webp" width="540" height="960" loading="eager" decoding="sync" alt="An illuminated street in Malta" class="malta-photo"></a><figcaption>Malta</figcaption></figure>
+<figure><button type="button" class="photo-link" data-full-image="images/esflc-large.webp" aria-haspopup="dialog" aria-label="View larger photo: ESFLC 34, Gothenburg, 2026"><img src="images/esflc.webp" width="720" height="537" loading="eager" decoding="sync" alt="Speaker pointing to the projected slides at ESFLC 34"></button><figcaption>ESFLC 34, Gothenburg, 2026</figcaption></figure>
+<figure><button type="button" class="photo-link" data-full-image="images/cdigra-large.webp" aria-haspopup="dialog" aria-label="View larger photo: Chinese DiGRA, Shanghai, 2025"><img src="images/cdigra.webp" width="720" height="540" loading="eager" decoding="sync" alt="Speaker presenting at the NYU Shanghai podium" class="cdigra-photo"></button><figcaption>Chinese DiGRA, Shanghai, 2025</figcaption></figure>
+<figure><button type="button" class="photo-link" data-full-image="images/malta-large.webp" aria-haspopup="dialog" aria-label="View larger photo: During DiGRA 2025, Malta"><img src="images/malta.webp" width="540" height="960" loading="eager" decoding="sync" alt="An illuminated street in Malta" class="malta-photo"></button><figcaption>During DiGRA 2025, Malta</figcaption></figure>
 </div>
 
 
@@ -95,5 +95,47 @@
 </footer>
 
 </div>
+
+<dialog class="photo-viewer" aria-labelledby="photo-viewer-caption">
+  <div class="viewer-toolbar">
+    <p id="photo-viewer-caption" class="viewer-caption">Photo</p>
+    <button class="viewer-close" type="button" aria-label="Close photo viewer" autofocus>× Close</button>
+  </div>
+  <img class="viewer-image" alt="">
+  <p class="viewer-hint">Click the photo or background to close · Esc</p>
+</dialog>
+<script>
+(() => {
+  const viewer = document.querySelector('.photo-viewer');
+  const image = viewer.querySelector('.viewer-image');
+  const caption = viewer.querySelector('.viewer-caption');
+  let trigger = null;
+  document.querySelectorAll('.photo-link').forEach(button => {
+    button.addEventListener('click', () => {
+      if (typeof viewer.showModal !== 'function') return;
+      trigger = button;
+      image.src = button.dataset.fullImage;
+      image.alt = button.querySelector('img').alt;
+      caption.textContent = button.closest('figure')?.querySelector('figcaption')?.textContent || 'Haoning Li';
+      viewer.showModal();
+      document.body.classList.add('viewer-open');
+    });
+  });
+  viewer.querySelector('.viewer-close').addEventListener('click', () => viewer.close());
+  viewer.addEventListener('keydown', event => {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      viewer.querySelector('.viewer-close').focus();
+    }
+  });
+  viewer.addEventListener('click', event => {
+    if (!event.target.closest('.viewer-toolbar')) viewer.close();
+  });
+  viewer.addEventListener('close', () => {
+    document.body.classList.remove('viewer-open');
+    if (trigger) trigger.focus({preventScroll: true});
+  });
+})();
+</script>
 </body>
 </html>
