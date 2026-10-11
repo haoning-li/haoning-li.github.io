@@ -14,6 +14,22 @@
 /* Home-only News divider: match the navigation rule without expanding the gap. */
 .news { padding-bottom: 1rem; border-bottom: 1px solid var(--rule); }
 .news + .intro { margin-top: 1rem; }
+
+/* Home-only Contact: email, expandable profile links, and compact Share. */
+.contact-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) 6rem; gap: 1.5rem; align-items: start; }
+.contact-profiles { min-width: 0; }
+.contact-profiles .links { align-items: baseline; }
+.contact-profiles .links a { white-space: nowrap; }
+.contact-share { display: contents; }
+.contact-share .share-actions { grid-column: 3; grid-row: 1; }
+.contact-share .share-status, .contact-share .share-fallback { grid-column: 1 / -1; justify-self: end; max-width: 36rem; margin-top: 0; }
+.contact-share .share-fallback { width: min(100%, 36rem); }
+.contact-share .share-status { overflow-wrap: anywhere; }
+@media (max-width: 900px) {
+  .contact-layout { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+  .contact-share .share-actions { grid-column: 1; grid-row: auto; justify-content: flex-start; }
+  .contact-share .share-status, .contact-share .share-fallback { justify-self: start; }
+}
 </style>
 </head>
 <body id="top">
@@ -83,12 +99,15 @@
 <p class="email">Working email: <a href="mailto:haoning.li@qmul.ac.uk">haoning.li@qmul.ac.uk</a></p>
 <p class="email">Personal email: <a href="mailto:haoningli.hnl@gmail.com">haoningli.hnl@gmail.com</a></p>
 </div>
+</div>
+<div class="contact-profiles">
+<!-- Add future profile links as list items here; they wrap in source order. -->
 <ul class="links">
   <li><a href="https://www.researchgate.net/profile/Haoning-Li-3?ev=hdr_xprf">ResearchGate</a></li>
   <li><a href="https://www.linkedin.com/in/haoning-li-ddc418">LinkedIn</a></li>
   <li><a href="https://orcid.org/0009-0002-2025-0851">ORCID</a></li>
 </ul>
-<p class="profile-note">“I’m sometimes a little slow to update these profiles.” ☺️</p>
+<p class="profile-note">“These profiles may not always be up to date. ☺️”</p>
 </div>
 <div class="contact-share">
 <div class="share-actions"><span class="share-label">Share</span><button type="button" class="share-button" id="share-homepage" aria-label="Copy name and homepage link" title="Copy name and homepage link"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M8.4 10.8l7.2-4.1M8.4 13.2l7.2 4.1"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="5.5" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/></svg></button></div>
