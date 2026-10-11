@@ -15,27 +15,41 @@
 .news { padding-bottom: 1rem; border-bottom: 1px solid var(--rule); }
 .news + .intro { margin-top: 1rem; }
 
-/* Home-only Contact: email, expandable profile links, and compact Share. */
-.contact-layout { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr) 6rem; gap: 1.5rem; align-items: start; }
+/* Home-only Contact: compact two groups, with Share in the header. */
+.contact-layout { grid-template-columns: max-content minmax(0, 1fr); column-gap: clamp(2rem, 4vw, 3rem); row-gap: 1rem; align-items: start; }
 .contact-profiles { min-width: 0; }
 .contact-profiles .links { align-items: baseline; }
 .contact-profiles .links a { white-space: nowrap; }
-.contact-share { display: contents; }
-.contact-share .share-actions { grid-column: 3; grid-row: 1; }
-.contact-share .share-status, .contact-share .share-fallback { grid-column: 1 / -1; justify-self: end; max-width: 36rem; margin-top: 0; }
-.contact-share .share-fallback { width: min(100%, 36rem); }
-.contact-share .share-status { overflow-wrap: anywhere; }
-@media (max-width: 900px) {
-  .contact-layout { grid-template-columns: minmax(0, 1fr); gap: 1rem; }
-  .contact-share .share-actions { grid-column: 1; grid-row: auto; justify-content: flex-start; }
-  .contact-share .share-status, .contact-share .share-fallback { justify-self: start; }
-}
+header { position: relative; }
+.header-share { position: absolute; top: 8px; right: 0; }
+.header-share .share-status { position: absolute; right: calc(100% + 0.75rem); top: 50%; transform: translateY(-50%); margin: 0; width: max-content; max-width: calc(100vw - 8rem); padding: 0.3rem 0.55rem; border: 1px solid var(--rule); border-radius: 4px; background: var(--bg); color: var(--accent); font-size: 0.85rem; line-height: 1.4; pointer-events: none; text-align: left; }
+.header-share .share-status:empty { visibility: hidden; }
+.share-dialog { width: min(28rem, calc(100vw - 2.5rem)); max-width: none; margin: auto; padding: 1.25rem; border: 1px solid var(--rule); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; text-align: left; }
+.share-dialog::backdrop { background: rgba(0, 0, 0, 0.25); }
+.share-dialog-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.75rem; }
+.share-dialog-title { margin: 0; font-weight: 600; }
+.share-dialog-close { min-height: 44px; padding: 0.4rem 0.65rem; border: 1px solid var(--rule); border-radius: 4px; color: var(--text); background: transparent; font: inherit; cursor: pointer; }
+.share-dialog-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.share-dialog-help { font-size: 0.9rem; color: var(--muted); }
+@media (max-width: 900px) { .contact-layout { grid-template-columns: minmax(0, 1fr); gap: 1rem; } }
+@media (max-width: 620px) { .header-share .share-label { display: none; } }
 </style>
 </head>
 <body id="top">
 <div class="wrap">
 
 <header>
+<div class="header-share">
+<div class="share-actions"><span class="share-label">Share</span><button type="button" class="share-button" id="share-homepage" aria-label="Copy name and homepage link" title="Copy name and homepage link"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M8.4 10.8l7.2-4.1M8.4 13.2l7.2 4.1"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="5.5" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/></svg></button></div>
+<p class="share-status" id="share-status" role="status" aria-live="polite" aria-atomic="true"></p>
+</div>
+<dialog class="share-fallback share-dialog" id="share-fallback" aria-labelledby="share-help-title">
+<div class="share-dialog-heading"><p class="share-dialog-title" id="share-help-title">Copy this name and link</p><button type="button" class="share-dialog-close">× Close</button></div>
+<p class="share-dialog-help">Automatic copying is unavailable. You can copy the selected text below.</p>
+<label for="share-link">Name and homepage link:</label>
+<input id="share-link" type="text" value="Haoning Li — https://haoning-li.github.io/" readonly>
+</dialog>
+
   <p class="name">Haoning Li</p>
   <p class="tagline" aria-label="Discourse Analyst, Social Semiotician, Gamer">
     <span class="identity identity-discourse" tabindex="0"><svg class="identity-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 4h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="M7 9h10M7 13h6"/></svg><span>Discourse Analyst</span></span>
@@ -109,14 +123,6 @@
 </ul>
 <p class="profile-note">“These profiles may not always be up to date. ☺️”</p>
 </div>
-<div class="contact-share">
-<div class="share-actions"><span class="share-label">Share</span><button type="button" class="share-button" id="share-homepage" aria-label="Copy name and homepage link" title="Copy name and homepage link"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M8.4 10.8l7.2-4.1M8.4 13.2l7.2 4.1"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="5.5" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/></svg></button></div>
-<p class="share-status" id="share-status" role="status" aria-live="polite" hidden></p>
-<div class="share-fallback" id="share-fallback" hidden>
-  <label for="share-link">Copy this name and link:</label>
-  <input id="share-link" type="text" value="Haoning Li — https://haoning-li.github.io/" readonly>
-</div>
-</div>
 </div>
 
 <h2 id="hobbies">Hobbies</h2>
@@ -188,10 +194,18 @@
   const fallback = document.querySelector('#share-fallback');
   const field = document.querySelector('#share-link');
   const shareText = 'Haoning Li — https://haoning-li.github.io/';
+  let feedbackTimer;
+  fallback.querySelector('.share-dialog-close').addEventListener('click', () => fallback.close());
+  fallback.addEventListener('close', () => button.focus({preventScroll: true}));
+  fallback.addEventListener('click', (event) => {
+    const box = fallback.getBoundingClientRect();
+    if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) fallback.close();
+  });
   button.addEventListener('click', async () => {
+    clearTimeout(feedbackTimer);
     button.disabled = true;
-    status.hidden = true;
-    fallback.hidden = true;
+    status.textContent = '';
+    if (fallback.open) fallback.close();
     let copied = false;
     try {
       if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
@@ -212,13 +226,12 @@
       temporary.remove();
     }
     button.disabled = false;
-    status.hidden = false;
     if (copied) {
-      status.textContent = 'Copied name and link — ready to share.';
+      status.textContent = 'Copied — ready to share!';
       button.focus({preventScroll: true});
+      feedbackTimer = setTimeout(() => { status.textContent = ''; }, 2000);
     } else {
-      status.textContent = 'Automatic copying is unavailable. Please copy the selected text below.';
-      fallback.hidden = false;
+      fallback.showModal();
       field.focus({preventScroll: true});
       field.select();
     }
