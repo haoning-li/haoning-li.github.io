@@ -20,9 +20,14 @@
 .contact-profiles { min-width: 0; }
 .contact-profiles .links { align-items: baseline; }
 .contact-profiles .links a { white-space: nowrap; }
-header { position: relative; }
-.header-share { position: absolute; top: 8px; right: 0; }
-.header-share .share-status { position: absolute; right: calc(100% + 0.75rem); top: 50%; transform: translateY(-50%); margin: 0; width: max-content; max-width: calc(100vw - 8rem); padding: 0.3rem 0.55rem; border: 1px solid var(--rule); border-radius: 4px; background: var(--bg); color: var(--accent); font-size: 0.85rem; line-height: 1.4; pointer-events: none; text-align: left; }
+.header-heading { position: relative; }
+.header-share { position: absolute; top: auto; bottom: 0; right: 0; }
+.header-share .share-trigger { display: inline-flex; align-items: center; gap: 0.6rem; min-height: 44px; padding: 0; border: 0; background: transparent; color: var(--accent); font: inherit; cursor: pointer; }
+.header-share .share-label { color: var(--text); font-size: 0.95rem; font-weight: 600; white-space: nowrap; }
+.header-share .share-trigger:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+.header-share .share-trigger:disabled { cursor: wait; }
+.header-share .share-trigger:hover .share-button { background: #eeeae1; border-color: var(--accent); }
+.header-share .share-status { position: absolute; right: 0; top: auto; bottom: calc(100% + 0.75rem); transform: none; margin: 0; width: max-content; max-width: calc(100vw - 2.5rem); padding: 0.3rem 0.55rem; border: 1px solid var(--rule); border-radius: 4px; background: var(--bg); color: var(--accent); font-size: 0.85rem; line-height: 1.4; pointer-events: none; text-align: left; }
 .header-share .share-status:empty { visibility: hidden; }
 .share-dialog { width: min(28rem, calc(100vw - 2.5rem)); max-width: none; margin: auto; padding: 1.25rem; border: 1px solid var(--rule); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; text-align: left; }
 .share-dialog::backdrop { background: rgba(0, 0, 0, 0.25); }
@@ -39,18 +44,20 @@ header { position: relative; }
 <div class="wrap">
 
 <header>
-<div class="header-share">
-<div class="share-actions"><span class="share-label">Share</span><button type="button" class="share-button" id="share-homepage" aria-label="Copy name and homepage link" title="Copy name and homepage link"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M8.4 10.8l7.2-4.1M8.4 13.2l7.2 4.1"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="5.5" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/></svg></button></div>
-<p class="share-status" id="share-status" role="status" aria-live="polite" aria-atomic="true"></p>
-</div>
 <dialog class="share-fallback share-dialog" id="share-fallback" aria-labelledby="share-help-title">
 <div class="share-dialog-heading"><p class="share-dialog-title" id="share-help-title">Copy this name and link</p><button type="button" class="share-dialog-close">× Close</button></div>
 <p class="share-dialog-help">Automatic copying is unavailable. You can copy the selected text below.</p>
 <label for="share-link">Name and homepage link:</label>
-<input id="share-link" type="text" value="Haoning Li — https://haoning-li.github.io/" readonly>
+<input id="share-link" type="text" value="Haoning Li, QMUL — https://haoning-li.github.io/" readonly>
 </dialog>
 
+  <div class="header-heading">
   <p class="name">Haoning Li</p>
+<div class="header-share">
+<div class="share-actions"><button type="button" class="share-trigger" id="share-homepage" aria-label="Share this page: copy name, affiliation and page link" title="Copy name and page link"><span class="share-label">Share this page</span><span class="share-button" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M8.4 10.8l7.2-4.1M8.4 13.2l7.2 4.1"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="5.5" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/></svg></span></button></div>
+<p class="share-status" id="share-status" role="status" aria-live="polite" aria-atomic="true"></p>
+</div>
+  </div>
   <p class="tagline" aria-label="Discourse Analyst, Social Semiotician, Gamer">
     <span class="identity identity-discourse" tabindex="0"><svg class="identity-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 4h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="M7 9h10M7 13h6"/></svg><span>Discourse Analyst</span></span>
     <span class="identity-separator" aria-hidden="true">·</span>
@@ -193,7 +200,7 @@ header { position: relative; }
   const status = document.querySelector('#share-status');
   const fallback = document.querySelector('#share-fallback');
   const field = document.querySelector('#share-link');
-  const shareText = 'Haoning Li — https://haoning-li.github.io/';
+  const shareText = 'Haoning Li, QMUL — https://haoning-li.github.io/';
   let feedbackTimer;
   fallback.querySelector('.share-dialog-close').addEventListener('click', () => fallback.close());
   fallback.addEventListener('close', () => button.focus({preventScroll: true}));
