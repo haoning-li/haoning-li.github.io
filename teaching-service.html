@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=share-r11">
+<link rel="stylesheet" href="style.css?v=home-r13">
 </head>
 <body id="top">
 <div class="wrap">
@@ -64,6 +64,14 @@
 <div class="entry"><span><b>Volunteer (translation and support)</b>, First China Public Policy Translation Forum, Beijing, China</span><span class="date">2019</span></div>
 
 
+<details class="service-moments" id="teaching-service-moments">
+  <summary><span>Teaching &amp; Service Moments</span><svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false"><path d="m7 4 6 6-6 6" /></svg></summary>
+  <div class="photos service-photos">
+<figure><button type="button" class="photo-link" data-full-image="images/speaking-practice-large.webp" aria-haspopup="dialog" aria-label="View larger photo: QMUL Language Speaking Practice Scheme team meeting, academic year ending 2026"><img src="images/speaking-practice.webp" width="720" height="540" loading="lazy" decoding="async" alt="The QMUL Language Speaking Practice Scheme team seated together at a meeting"></button><figcaption><span class="moment-name">QMUL Language Speaking Practice Scheme</span><span class="moment-detail">Team meeting · academic year ending 2026</span></figcaption></figure>
+<figure><button type="button" class="photo-link" data-full-image="images/chinese-language-day-large.webp" aria-haspopup="dialog" aria-label="View larger photo: International Chinese Language Day, 2025"><img src="images/chinese-language-day.webp" width="720" height="540" loading="lazy" decoding="async" alt="A group photograph in front of International Chinese Language Day banners"></button><figcaption><span class="moment-name">International Chinese Language Day</span><span class="moment-detail">2025</span></figcaption></figure>
+  </div>
+</details>
+
 </main>
 
 <footer>
@@ -72,5 +80,46 @@
 </footer>
 
 </div>
+<dialog class="photo-viewer" aria-labelledby="photo-viewer-caption">
+  <div class="viewer-toolbar">
+    <p id="photo-viewer-caption" class="viewer-caption">Photo</p>
+    <button class="viewer-close" type="button" aria-label="Close photo viewer" autofocus>× Close</button>
+  </div>
+  <img class="viewer-image" alt="">
+  <p class="viewer-hint">Click the photo or background to close · Esc</p>
+</dialog>
+<script>
+(() => {
+  const viewer = document.querySelector('.photo-viewer');
+  const image = viewer.querySelector('.viewer-image');
+  const caption = viewer.querySelector('.viewer-caption');
+  let trigger = null;
+  document.querySelectorAll('.photo-link').forEach(button => {
+    button.addEventListener('click', () => {
+      if (typeof viewer.showModal !== 'function') return;
+      trigger = button;
+      image.src = button.dataset.fullImage;
+      image.alt = button.querySelector('img').alt;
+      caption.textContent = button.closest('figure')?.querySelector('figcaption')?.innerText.replace(/\s+/g, ' ').trim() || 'Haoning Li';
+      viewer.showModal();
+      document.body.classList.add('viewer-open');
+    });
+  });
+  viewer.querySelector('.viewer-close').addEventListener('click', () => viewer.close());
+  viewer.addEventListener('keydown', event => {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      viewer.querySelector('.viewer-close').focus();
+    }
+  });
+  viewer.addEventListener('click', event => {
+    if (!event.target.closest('.viewer-toolbar')) viewer.close();
+  });
+  viewer.addEventListener('close', () => {
+    document.body.classList.remove('viewer-open');
+    if (trigger) trigger.focus({preventScroll: true});
+  });
+})();
+</script>
 </body>
 </html>
