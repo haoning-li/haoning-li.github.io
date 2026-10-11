@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=home-r13">
+<link rel="stylesheet" href="style.css?v=news-r14">
 </head>
 <body id="top">
 <div class="wrap">
@@ -35,17 +35,19 @@
 
 <main>
 
-<!-- News: replace only the text inside .news-copy when adding an update. -->
-<section class="news" aria-label="News">
-  <button type="button" class="news-flag" id="news-animation-toggle" aria-label="Pause News flag animation" aria-pressed="false" title="Click to pause the News flag" disabled>
-    <svg class="news-flag-background" viewBox="0 0 112 44" width="112" height="44" aria-hidden="true" focusable="false">
-      <path class="news-flag-cloth" d="M4 6 C35 3 69 9 106 6 L100 21 L108 36 C71 40 37 32 4 36 Z">
-        <animate id="news-flag-wave" attributeName="d" begin="indefinite" dur="6s" repeatCount="indefinite" calcMode="spline" keyTimes="0;0.25;0.5;0.75;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1" values="M4 6 C35 3 69 9 106 6 L100 21 L108 36 C71 40 37 32 4 36 Z;M4 6 C35 4 69 6 106 4.5 L100 20 L108 34.5 C71 37 37 33 4 36 Z;M4 6 C35 6 69 6 106 6 L100 21 L108 36 C71 36 37 35 4 36 Z;M4 6 C35 3 69 10 106 7.5 L100 22 L108 37.5 C71 41 37 32 4 36 Z;M4 6 C35 3 69 9 106 6 L100 21 L108 36 C71 40 37 32 4 36 Z" />
-      </path>
+<!-- News: edit the two list items below; this flag is decorative, not a control. -->
+<section class="news" aria-labelledby="news-title">
+  <h2 class="news-flag" id="news-title" aria-label="News">
+    <canvas class="news-flag-canvas" width="448" height="176" aria-hidden="true"></canvas>
+    <svg class="news-flag-fallback" viewBox="0 0 112 44" width="112" height="44" aria-hidden="true" focusable="false">
+      <path d="M4 6 C35 3 69 9 106 6 L100 21 L108 36 C71 40 37 32 4 36 Z" />
+      <text x="50" y="29" text-anchor="middle">News</text>
     </svg>
-    <span class="news-flag-word" aria-hidden="true">News</span>
-  </button>
-  <p class="news-copy">Coming soon</p>
+  </h2>
+  <ul class="news-copy">
+    <li>I’m busy writing up my PhD thesis, but I’ve also been looking into <u>multimodal cohesion</u> and <u>multimodal metaphor</u>, and exploring their potential for new projects.</li>
+    <li>I’ve been keeping a close eye on <i>Phantom Blade Zero</i> and <i>GTA VI</i>—though finding time to play them might be another story.</li>
+  </ul>
 </section>
 
 
@@ -199,38 +201,64 @@
 })();
 </script>
 <script>
-(() => {
-  const button = document.querySelector('#news-animation-toggle');
-  if (!button) return;
-  const svg = button.querySelector('svg');
-  const wave = svg.querySelector('animate');
+// News: one shared fabric wave deforms both the cloth and the printed lettering.
+// No pointer, click, keyboard, pause, or resume controls are attached to the flag.
+(async () => {
+  const flag = document.querySelector('.news-flag');
+  if (!flag) return;
+  const canvas = flag.querySelector('canvas');
+  const out = canvas.getContext('2d');
+  const texture = document.createElement('canvas');
+  const W = 112, H = 44, RES = 4, PERIOD = 3000, AMPLITUDE = 5.2;
+  texture.width = W * RES; texture.height = H * RES;
+  const tex = texture.getContext('2d');
+  if (!out || !tex) return; // The static SVG remains visible without Canvas support.
   const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let pausedByUser = false;
-  // Motion runs only after JavaScript enables the pause control.
-  const applyPreference = () => {
-    const reduced = preference.matches;
-    button.disabled = reduced;
-    button.classList.toggle('is-paused', reduced || pausedByUser);
-    button.setAttribute('aria-pressed', String(reduced || pausedByUser));
-    if (reduced) {
-      svg.pauseAnimations();
-      svg.setCurrentTime(0);
-      button.setAttribute('aria-label', 'News flag: motion disabled by your reduced-motion preference');
-      button.title = 'News — reduced motion';
-    } else {
-      if (pausedByUser) svg.pauseAnimations(); else svg.unpauseAnimations();
-      button.setAttribute('aria-label', pausedByUser ? 'Resume News flag animation' : 'Pause News flag animation');
-      button.title = pausedByUser ? 'Click to resume the News flag' : 'Click to pause the News flag';
+  const style = getComputedStyle(flag);
+  const foreground = style.getPropertyValue('--bg').trim() || '#f7f5f0';
+  const color = (style.getPropertyValue('--accent').trim() || '#1f6f6b').replace('#', '');
+  const base = color.length === 6 ? [0, 2, 4].map(i => parseInt(color.slice(i, i + 2), 16)) : [31, 111, 107];
+  const silhouette = new Path2D('M4 6 C35 3 69 9 106 6 L100 21 L108 36 C71 40 37 32 4 36 Z');
+  let elapsed = 0, raf = 0, lastStamp = null, lastDraw = -Infinity;
+  try { await document.fonts.load('italic 600 24px "NewsFlagSerif"'); } catch (_) { /* Georgia fallback. */ }
+  function draw(ms) {
+    const phase = 2 * Math.PI * ((ms % PERIOD) / PERIOD);
+    tex.setTransform(RES, 0, 0, RES, 0, 0); tex.clearRect(0, 0, W, H);
+    tex.save(); tex.clip(silhouette);
+    const lighting = tex.createLinearGradient(0, 0, W, 0);
+    for (let x = 0; x <= W; x += 2) {
+      const shade = 0.935 + 0.125 * Math.cos(2 * Math.PI * x / W - phase + 0.35);
+      lighting.addColorStop(x / W, `rgb(${base.map(v => Math.round(v * shade)).join(' ')})`);
     }
-  };
-  button.addEventListener('click', () => {
-    pausedByUser = !pausedByUser;
-    applyPreference();
-  });
-  if (typeof wave.beginElement === 'function') wave.beginElement();
-  applyPreference();
-  if (preference.addEventListener) preference.addEventListener('change', applyPreference);
-  else preference.addListener(applyPreference);
+    tex.fillStyle = lighting; tex.fillRect(0, 0, W, H);
+    tex.font = 'italic 600 24px NewsFlagSerif, Georgia, serif';
+    tex.textAlign = 'center'; tex.textBaseline = 'alphabetic'; tex.fillStyle = foreground;
+    const metrics = tex.measureText('News');
+    tex.fillText('News', 50, 22 + (metrics.actualBoundingBoxAscent - metrics.actualBoundingBoxDescent) / 2);
+    tex.restore();
+    out.setTransform(RES, 0, 0, RES, 0, 0); out.clearRect(0, 0, W, H); out.imageSmoothingEnabled = true;
+    for (let x = 0; x < W; x += 0.5) {
+      const free = Math.max(0, (x - 4) / 104);
+      const offset = AMPLITUDE * Math.pow(free, 0.85) * Math.sin(2 * Math.PI * x / W - phase);
+      out.drawImage(texture, x * RES, 0, 0.5 * RES, H * RES, x, offset, 0.5, H);
+    }
+  }
+  function frame(stamp) {
+    if (preference.matches || document.hidden) return;
+    if (lastStamp !== null) elapsed += Math.min(stamp - lastStamp, 64);
+    lastStamp = stamp;
+    if (stamp - lastDraw >= 1000 / 30) { draw(elapsed); lastDraw = stamp; }
+    raf = requestAnimationFrame(frame);
+  }
+  function start() {
+    cancelAnimationFrame(raf); lastStamp = null; lastDraw = -Infinity;
+    if (preference.matches) { elapsed = 0; draw(0); }
+    else if (!document.hidden) raf = requestAnimationFrame(frame);
+  }
+  draw(0); flag.classList.add('ready'); start();
+  document.addEventListener('visibilitychange', start);
+  if (preference.addEventListener) preference.addEventListener('change', start);
+  else preference.addListener(start);
 })();
 </script>
 </body>

@@ -240,16 +240,21 @@ button.photo-link { padding: 0; width: 100%; background: transparent; font: inhe
 .research-themes ul { display: grid; gap: 0.55rem; list-style: none; padding: 0; margin: 0; font-size: 1rem; line-height: 1.4; }
 .research-themes li { display: grid; grid-template-columns: 20px minmax(0, 1fr); gap: 8px; align-items: start; }
 .theme-icon { line-height: 1.4; text-align: center; }
-.news { display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem; min-height: 48px; }
-.news-flag { position: relative; flex: 0 0 112px; width: 112px; height: 44px; padding: 0; border: 0; background: transparent; color: var(--bg); cursor: pointer; }
-.news-flag-background { display: block; width: 112px; height: 44px; overflow: visible; }
-.news-flag-cloth { fill: var(--accent); }
-.news-flag-word { position: absolute; inset: 4px 18px 4px 5px; display: grid; place-items: center; font-family: "Source Serif 4", Georgia, serif; font-size: 24px; line-height: 1; font-weight: 600; font-style: italic; transform-origin: 5% 50%; animation: news-word-breeze 6s ease-in-out infinite; animation-play-state: paused; }
-.news-flag:not(:disabled):not(.is-paused) .news-flag-word { animation-play-state: running; }
-.news-flag:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
-.news-flag:disabled { cursor: default; opacity: 1; }
-.news-copy { margin: 0; font-size: 1rem; line-height: 1.5; }
-@keyframes news-word-breeze { 0%, 50%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-0.6deg); } 75% { transform: rotate(0.6deg); } }
+/* The four News glyphs use the approved preview font; the site's body fonts are unchanged. */
+@font-face { font-family: NewsFlagSerif; src: url(data:font/woff2;base64,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JU9QSiEIAAAAAAANAKIAAwABBAkAAADGAcwAAwABBAkAAQAuAZ4AAwABBAkAAgAMAZIAAwABBAkAAwBMAUYAAwABBAkABAA8AQoAAwABBAkABQBkAKYAAwABBAkABgA2AHAAAwABBAkADgA0ADwAAwABBAkBVQAMAZIAAwABBAkBYwAYACQAAwABBAkBaQAIABwAAwABBAkBcwAMABAAAwABBAkBeAAQAAAAUwBlAG0AaQBCAG8AbABkAFcAZQBpAGcAaAB0ADEANABwAHQATwBwAHQAaQBjAGEAbAAgAHMAaQB6AGUAaAB0AHQAcAA6AC8ALwBzAGMAcgBpAHAAdABzAC4AcwBpAGwALgBvAHIAZwAvAE8ARgBMAFMAbwB1AHIAYwBlAFMAZQByAGkAZgA0AC0AUwBlAG0AaQBCAG8AbABkAEkAdABhAGwAaQBjAFYAZQByAHMAaQBvAG4AIAA0AC4AMAAwADQAOwBoAG8AdABjAG8AbgB2ACAAMQAuADAALgAxADEANgA7AG0AYQBrAGUAbwB0AGYAZQB4AGUAIAAyAC4ANQAuADYANQA2ADAAMQBTAG8AdQByAGMAZQAgAFMAZQByAGkAZgAgADQAIABTAGUAbQBpAEIAbwBsAGQAIABJAHQAYQBsAGkAYwA0AC4AMAAwADQAOwBBAEQAQgBPADsAUwBvAHUAcgBjAGUAUwBlAHIAaQBmADQALQBTAGUAbQBpAEIAbwBsAGQASQB0AGEAbABpAGMASQB0AGEAbABpAGMAUwBvAHUAcgBjAGUAIABTAGUAcgBpAGYAIAA0ACAAUwBlAG0AaQBCAG8AbABkAKkAIAAyADAAMQA0ACAALQAgADIAMAAyADEAIABBAGQAbwBiAGUAIABTAHkAcwB0AGUAbQBzACAASQBuAGMAbwByAHAAbwByAGEAdABlAGQAIAAoAGgAdAB0AHAAOgAvAC8AdwB3AHcALgBhAGQAbwBiAGUALgBjAG8AbQAvACkALAAgAHcAaQB0AGgAIABSAGUAcwBlAHIAdgBlAGQAIABGAG8AbgB0ACAATgBhAG0AZQAgIBgAUwBvAHUAcgBjAGUgGQAu) format('woff2'); font-weight: 600; font-style: italic; font-display: swap; }
+.news { display: flex; align-items: flex-start; gap: 1rem; margin-top: 0.5rem; min-height: 48px; }
+.news-flag { position: relative; flex: 0 0 112px; width: 112px; height: 44px; margin: 0; padding: 0; border: 0; background: transparent; color: var(--bg); text-transform: none; letter-spacing: normal; line-height: 1; cursor: default; }
+.news-flag canvas { display: none; width: 112px; height: 44px; }
+.news-flag.ready canvas { display: block; }
+.news-flag-fallback { display: block; width: 112px; height: 44px; }
+.news-flag.ready .news-flag-fallback { display: none; }
+.news-flag-fallback path { fill: var(--accent); }
+.news-flag-fallback text { fill: var(--bg); font-family: NewsFlagSerif, Georgia, serif; font-size: 24px; font-weight: 600; font-style: italic; }
+.news-flag * { cursor: default; }
+.news-copy { flex: 1; min-width: 0; margin: 0; padding-left: 1.1rem; font-size: 1rem; line-height: 1.5; }
+.news-copy li + li { margin-top: 0.5rem; }
+.news-copy li::marker { color: var(--accent); }
+.news-copy u { text-decoration-thickness: 1px; text-underline-offset: 0.18em; cursor: text; }
 /* Travel only: do not change the Conference Moments layout. */
 .travel-photos { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 /* Only the photographs collapse; all teaching and service entries stay visible. */
@@ -270,11 +275,109 @@ button.photo-link { padding: 0; width: 100%; background: transparent; font: inhe
   .profile-aside { flex-basis: auto; width: min(100%, 320px); }
   .intro .profile-aside .photo { width: 160px; }
   .research-themes { margin-top: 1rem; }
-  .news { gap: 12px; }
+  .news { flex-direction: column; gap: 8px; }
+  .news-flag { flex-basis: auto; }
+  .news-copy { flex: none; width: 100%; }
   .service-photos { grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
   .service-moments summary { letter-spacing: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .news-flag-word { animation: none; }
   .service-moments summary svg { transition: none; }
 }
+
+/* Embedded Source Serif 4 font license:
+Copyright 2014 The Source Serif 4 Project Authors (https://github.com/adobe-fonts/source-serif)
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+https://openfontlicense.org
+
+
+-----------------------------------------------------------
+SIL OPEN FONT LICENSE Version 1.1 - 26 February 2007
+-----------------------------------------------------------
+
+PREAMBLE
+The goals of the Open Font License (OFL) are to stimulate worldwide
+development of collaborative font projects, to support the font creation
+efforts of academic and linguistic communities, and to provide a free and
+open framework in which fonts may be shared and improved in partnership
+with others.
+
+The OFL allows the licensed fonts to be used, studied, modified and
+redistributed freely as long as they are not sold by themselves. The
+fonts, including any derivative works, can be bundled, embedded, 
+redistributed and/or sold with any software provided that any reserved
+names are not used by derivative works. The fonts and derivatives,
+however, cannot be released under any other type of license. The
+requirement for fonts to remain under this license does not apply
+to any document created using the fonts or their derivatives.
+
+DEFINITIONS
+"Font Software" refers to the set of files released by the Copyright
+Holder(s) under this license and clearly marked as such. This may
+include source files, build scripts and documentation.
+
+"Reserved Font Name" refers to any names specified as such after the
+copyright statement(s).
+
+"Original Version" refers to the collection of Font Software components as
+distributed by the Copyright Holder(s).
+
+"Modified Version" refers to any derivative made by adding to, deleting,
+or substituting -- in part or in whole -- any of the components of the
+Original Version, by changing formats or by porting the Font Software to a
+new environment.
+
+"Author" refers to any designer, engineer, programmer, technical
+writer or other person who contributed to the Font Software.
+
+PERMISSION & CONDITIONS
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of the Font Software, to use, study, copy, merge, embed, modify,
+redistribute, and sell modified and unmodified copies of the Font
+Software, subject to the following conditions:
+
+1) Neither the Font Software nor any of its individual components,
+in Original or Modified Versions, may be sold by itself.
+
+2) Original or Modified Versions of the Font Software may be bundled,
+redistributed and/or sold with any software, provided that each copy
+contains the above copyright notice and this license. These can be
+included either as stand-alone text files, human-readable headers or
+in the appropriate machine-readable metadata fields within text or
+binary files as long as those fields can be easily viewed by the user.
+
+3) No Modified Version of the Font Software may use the Reserved Font
+Name(s) unless explicit written permission is granted by the corresponding
+Copyright Holder. This restriction only applies to the primary font name as
+presented to the users.
+
+4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font
+Software shall not be used to promote, endorse or advertise any
+Modified Version, except to acknowledge the contribution(s) of the
+Copyright Holder(s) and the Author(s) or with their explicit written
+permission.
+
+5) The Font Software, modified or unmodified, in part or in whole,
+must be distributed entirely under this license, and must not be
+distributed under any other license. The requirement for fonts to
+remain under this license does not apply to any document created
+using the Font Software.
+
+TERMINATION
+This license becomes null and void if any of the above conditions are
+not met.
+
+DISCLAIMER
+THE FONT SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT
+OF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE
+COPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+INCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL
+DAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
+OTHER DEALINGS IN THE FONT SOFTWARE.
+
+*/
