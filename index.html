@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=news-r14">
+<link rel="stylesheet" href="style.css?v=shared-header-width-r23">
 <style>
 /* Home-only News divider: match the navigation rule without expanding the gap. */
 .news { padding-bottom: 1rem; border-bottom: 1px solid var(--rule); }
@@ -20,24 +20,7 @@
 .contact-profiles { min-width: 0; }
 .contact-profiles .links { align-items: baseline; }
 .contact-profiles .links a { white-space: nowrap; }
-.header-heading { position: relative; }
-.header-share { position: absolute; top: calc(100% - 44px); bottom: auto; right: 0; }
-.header-share .share-trigger { display: inline-flex; flex-direction: column; align-items: center; gap: 4px; min-height: 44px; padding: 0; border: 0; background: transparent; color: var(--accent); font: inherit; cursor: pointer; }
-.header-share .share-label { color: var(--muted); font-size: 0.95rem; font-weight: 600; white-space: nowrap; }
-.header-share .share-trigger:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
-.header-share .share-trigger:disabled { cursor: wait; }
-.header-share .share-trigger:hover .share-button { background: #eeeae1; border-color: var(--accent); }
-.header-share .share-status { position: absolute; right: 0; top: auto; bottom: calc(100% + 0.75rem); transform: none; margin: 0; width: max-content; max-width: calc(100vw - 2.5rem); padding: 0.3rem 0.55rem; border: 1px solid var(--rule); border-radius: 4px; background: var(--bg); color: var(--accent); font-size: 0.85rem; line-height: 1.4; pointer-events: none; text-align: left; }
-.header-share .share-status:empty { visibility: hidden; }
-.share-dialog { width: min(28rem, calc(100vw - 2.5rem)); max-width: none; margin: auto; padding: 1.25rem; border: 1px solid var(--rule); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; text-align: left; }
-.share-dialog::backdrop { background: rgba(0, 0, 0, 0.25); }
-.share-dialog-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.75rem; }
-.share-dialog-title { margin: 0; font-weight: 600; }
-.share-dialog-close { min-height: 44px; padding: 0.4rem 0.65rem; border: 1px solid var(--rule); border-radius: 4px; color: var(--text); background: transparent; font: inherit; cursor: pointer; }
-.share-dialog-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-.share-dialog-help { font-size: 0.9rem; color: var(--muted); }
 @media (max-width: 900px) { .contact-layout { grid-template-columns: minmax(0, 1fr); gap: 1rem; } }
-@media (max-width: 900px) { .header-share .share-label { display: none; } }
 </style>
 </head>
 <body id="top">
@@ -47,7 +30,7 @@
 <dialog class="share-fallback share-dialog" id="share-fallback" aria-labelledby="share-help-title">
 <div class="share-dialog-heading"><p class="share-dialog-title" id="share-help-title">Copy this name and link</p><button type="button" class="share-dialog-close">× Close</button></div>
 <p class="share-dialog-help">Automatic copying is unavailable. You can copy the selected text below.</p>
-<label for="share-link">Name and homepage link:</label>
+<label for="share-link">Name and page link:</label>
 <input id="share-link" type="text" value="Haoning Li, QMUL — https://haoning-li.github.io/" readonly>
 </dialog>
 
@@ -108,8 +91,8 @@
       </ul>
     </section>
   </aside>
-  <div class="about"><p>I am a PhD candidate in Applied Linguistics at the <a href="https://www.qmul.ac.uk/arts/">School of the Arts, Queen Mary University of London</a>, where I am in the final stage of writing up my thesis. During my PhD, I have developed a particular interest in looking into social media and video games from a social semiotic perspective, including how users interact with them. My PhD research examines how character-centric discourse is built into the interface interactivity of gacha games, which offers insight into how character progression is recontextualised within these games. I am also interested in fandom and popular culture, game translation and localisation, and broader digital media ecosystems—interests that extend to game design, digital humanities and human–computer interaction.</p>
-<p>My PhD research primarily draws on multimodal discourse analysis and close reading to examine games. Beyond my PhD project, I also have experience working with methods from corpus linguistics and using Python and R to support literature review and explore textual data.</p>
+  <div class="about"><p>I am a PhD candidate in Applied Linguistics at the <a href="https://www.qmul.ac.uk/arts/">School of the Arts, Queen Mary University of London</a>, where I am in the final stage of writing up my thesis. During my PhD, I have developed an interest in social media and video games from a social semiotic perspective, including how users interact with them. My PhD research examines how character-centric discourse is built into the interface interactivity of gacha games, which offers insight into how character progression is recontextualised within these games. I am also interested in fandom and popular culture, game translation and localisation, and broader digital media ecosystems—interests that extend to game design, digital humanities and human–computer interaction.</p>
+<p>My PhD research primarily draws on multimodal discourse analysis and close reading to examine games. Beyond my PhD project, I have experience with corpus linguistic methods and using Python and R to support literature review and explore textual data.</p>
 <p>Before my PhD, I completed a Master of Translation and Interpreting at Beijing International Studies University with a focus on multimodality and interactivity in game localisation and worked as a lecturer at Tangshan Vocational &amp; Technical College, where I taught College English and was responsible for class management and student mentoring. At Queen Mary, I currently teach academic reading and writing in the Department of International Education, and I am an Associate Fellow of the Higher Education Academy (AFHEA).</p></div>
 </section>
 

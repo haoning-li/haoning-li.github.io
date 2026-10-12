@@ -9,13 +9,26 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=news-r14">
+<link rel="stylesheet" href="style.css?v=shared-header-width-r23">
 </head>
 <body id="top">
 <div class="wrap">
 
 <header>
+<dialog class="share-fallback share-dialog" id="share-fallback" aria-labelledby="share-help-title">
+<div class="share-dialog-heading"><p class="share-dialog-title" id="share-help-title">Copy this name and link</p><button type="button" class="share-dialog-close">× Close</button></div>
+<p class="share-dialog-help">Automatic copying is unavailable. You can copy the selected text below.</p>
+<label for="share-link">Name and page link:</label>
+<input id="share-link" type="text" value="Haoning Li, QMUL — https://haoning-li.github.io/teaching-service.html" readonly>
+</dialog>
+
+  <div class="header-heading">
   <p class="name">Haoning Li</p>
+<div class="header-share">
+<div class="share-actions"><button type="button" class="share-trigger" id="share-homepage" aria-label="Share this page: copy name, affiliation and page link" title="Copy name and page link"><span class="share-button" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path d="M8.4 10.8l7.2-4.1M8.4 13.2l7.2 4.1"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="5.5" r="2.6"/><circle cx="18" cy="18.5" r="2.6"/></svg></span><span class="share-label">Share this page</span></button></div>
+<p class="share-status" id="share-status" role="status" aria-live="polite" aria-atomic="true"></p>
+</div>
+  </div>
   <p class="tagline" aria-label="Discourse Analyst, Social Semiotician, Gamer">
     <span class="identity identity-discourse" tabindex="0"><svg class="identity-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 4h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="M7 9h10M7 13h6"/></svg><span>Discourse Analyst</span></span>
     <span class="identity-separator" aria-hidden="true">·</span>
@@ -118,6 +131,58 @@
   viewer.addEventListener('close', () => {
     document.body.classList.remove('viewer-open');
     if (trigger) trigger.focus({preventScroll: true});
+  });
+})();
+</script>
+<script>
+(() => {
+  const button = document.querySelector('#share-homepage');
+  if (!button) return;
+  const status = document.querySelector('#share-status');
+  const fallback = document.querySelector('#share-fallback');
+  const field = document.querySelector('#share-link');
+  const shareText = 'Haoning Li, QMUL — https://haoning-li.github.io/teaching-service.html';
+  let feedbackTimer;
+  fallback.querySelector('.share-dialog-close').addEventListener('click', () => fallback.close());
+  fallback.addEventListener('close', () => button.focus({preventScroll: true}));
+  fallback.addEventListener('click', (event) => {
+    const box = fallback.getBoundingClientRect();
+    if (event.clientX < box.left || event.clientX > box.right || event.clientY < box.top || event.clientY > box.bottom) fallback.close();
+  });
+  button.addEventListener('click', async () => {
+    clearTimeout(feedbackTimer);
+    button.disabled = true;
+    status.textContent = '';
+    if (fallback.open) fallback.close();
+    let copied = false;
+    try {
+      if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+        await navigator.clipboard.writeText(shareText);
+        copied = true;
+      }
+    } catch (_) { /* Try the legacy copy path below. */ }
+    if (!copied) {
+      const temporary = document.createElement('textarea');
+      temporary.value = shareText;
+      temporary.readOnly = true;
+      temporary.setAttribute('aria-hidden', 'true');
+      temporary.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0';
+      document.body.appendChild(temporary);
+      temporary.select();
+      temporary.setSelectionRange(0, shareText.length);
+      try { copied = document.execCommand('copy'); } catch (_) { copied = false; }
+      temporary.remove();
+    }
+    button.disabled = false;
+    if (copied) {
+      status.textContent = 'Copied — ready to share!';
+      button.focus({preventScroll: true});
+      feedbackTimer = setTimeout(() => { status.textContent = ''; }, 2000);
+    } else {
+      fallback.showModal();
+      field.focus({preventScroll: true});
+      field.select();
+    }
   });
 })();
 </script>

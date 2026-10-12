@@ -9,7 +9,7 @@
   --muted: #6b6b6b;
   --accent: #1f6f6b;    /* the single accent colour (teal) */
   --rule: #d9d5cc;
-  --max: 1080px;
+  --max: 1160px;
 }
 
 * { box-sizing: border-box; }
@@ -65,6 +65,7 @@ p { margin: 0 0 1rem; }
 .intro { display: flex; gap: 1.75rem; align-items: flex-start; margin-top: 2rem; }
 .intro .photo { flex: 0 0 170px; }
 .intro .photo img { width: 170px; height: 210px; object-fit: cover; border-radius: 4px; }
+.intro .about p { text-wrap: pretty; }
 .intro .about p:last-child { margin-bottom: 0; }
 
 /* ---------- lists ---------- */
@@ -233,7 +234,8 @@ button.photo-link { padding: 0; width: 100%; background: transparent; font: inhe
 @media (max-width: 700px) { .contact-layout { grid-template-columns: minmax(0, 1fr); gap: 0.75rem; } }
 
 /* ---------- October 2026: Home research themes and News flag ---------- */
-.profile-aside { flex: 0 0 238px; min-width: 0; }
+.profile-aside { flex: 0 0 360px; min-width: 0; }
+@media (max-width: 900px) { .profile-aside { flex-basis: 270px; } }
 .intro .profile-aside .photo { width: 180px; margin-inline: auto; }
 .research-themes { margin-top: 1.25rem; }
 .research-themes h2 { margin: 0 0 0.75rem; padding: 0; border: 0; text-transform: none; letter-spacing: 0.02em; font-size: 1rem; line-height: 1.4; }
@@ -381,3 +383,22 @@ FROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM
 OTHER DEALINGS IN THE FONT SOFTWARE.
 
 */
+
+/* Shared page-header Share utility; the caption and icon match Home. */
+.header-heading { position: relative; }
+.header-share { position: absolute; top: calc(100% - 44px); bottom: auto; right: 0; }
+.header-share .share-trigger { display: inline-flex; flex-direction: column; align-items: center; gap: 4px; min-height: 44px; padding: 0; border: 0; background: transparent; color: var(--accent); font: inherit; cursor: pointer; }
+.header-share .share-label { color: var(--muted); font-size: 0.95rem; font-weight: 600; white-space: nowrap; }
+.header-share .share-trigger:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+.header-share .share-trigger:disabled { cursor: wait; }
+.header-share .share-trigger:hover .share-button { background: #eeeae1; border-color: var(--accent); }
+.header-share .share-status { position: absolute; right: 0; top: auto; bottom: calc(100% + 0.75rem); transform: none; margin: 0; width: max-content; max-width: calc(100vw - 2.5rem); padding: 0.3rem 0.55rem; border: 1px solid var(--rule); border-radius: 4px; background: var(--bg); color: var(--accent); font-size: 0.85rem; line-height: 1.4; pointer-events: none; text-align: left; }
+.header-share .share-status:empty { visibility: hidden; }
+.share-dialog { width: min(28rem, calc(100vw - 2.5rem)); max-width: none; margin: auto; padding: 1.25rem; border: 1px solid var(--rule); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; text-align: left; }
+.share-dialog::backdrop { background: rgba(0, 0, 0, 0.25); }
+.share-dialog-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.75rem; }
+.share-dialog-title { margin: 0; font-weight: 600; }
+.share-dialog-close { min-height: 44px; padding: 0.4rem 0.65rem; border: 1px solid var(--rule); border-radius: 4px; color: var(--text); background: transparent; font: inherit; cursor: pointer; }
+.share-dialog-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.share-dialog-help { font-size: 0.9rem; color: var(--muted); }
+@media (max-width: 900px) { .header-share .share-label { display: none; } }
