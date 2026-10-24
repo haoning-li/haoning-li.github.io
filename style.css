@@ -141,16 +141,19 @@ footer a { display: inline-flex; align-items: center; min-height: 44px; }
 
 /* ---------- decorative identity signatures ---------- */
 header .tagline { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 0.15rem; margin-top: 0.35rem; font-size: 1rem; }
-.identity { position: relative; display: inline-flex; align-items: center; min-height: 44px; padding: 0.35rem 0.65rem 0.35rem 1.8rem; white-space: nowrap; cursor: default; }
+.identity { position: relative; display: inline-flex; align-items: center; min-height: 44px; padding: 0.35rem 0.65rem 0.35rem 2.1rem; border-radius: 4px; white-space: nowrap; cursor: default; }
 .identity-icon { position: absolute; left: 0.4rem; top: 50%; transform: translateY(-50%); transform-origin: center; width: 20px; height: 20px; opacity: 1; pointer-events: none; }
 svg.identity-icon { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.identity-discourse { background: #dde9f2; }
 .identity-discourse .identity-icon { color: #274a66; }
+.identity-semiotician { background: #eee5c3; }
 .identity-semiotician .identity-icon { color: #6f571c; }
-.identity-gamer .identity-icon { color: #375d4e; }
+.identity-gamer { background: #eee6f5; }
+.identity-gamer .identity-icon { color: #665080; }
 .identity-gamer svg { width: 22px; height: 22px; left: 0.25rem; stroke-width: 5; }
 .interrobang { font-family: 'Source Serif 4', Georgia, serif; font-size: 28px; line-height: 20px; text-align: center; }
 @media (max-width: 620px) {
-  header .tagline { flex-direction: column; }
+  header .tagline { flex-direction: column; row-gap: 4px; }
   .identity-separator { display: none; }
 }
 

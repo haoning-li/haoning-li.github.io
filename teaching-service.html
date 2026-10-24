@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=identity-pulse-r27">
+<link rel="stylesheet" href="style.css?v=identity-pulse-r28">
 </head>
 <body id="top">
 <div class="wrap">
@@ -148,13 +148,11 @@
   const fallback = document.querySelector('#share-fallback');
   const field = document.querySelector('#share-link');
   const shareText = 'Haoning Li, QMUL — https://haoning-li.github.io/teaching-service.html';
-  // Decorative identity motion: one introduction per tab, plus successful shares.
+  // Decorative identity motion: one introduction per page load, plus successful shares.
   const icons = [...document.querySelectorAll('.identity-icon')];
   const tagline = document.querySelector('.tagline');
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const introKey = 'identity-introduction-r27';
   let introduced = false;
-  try { introduced = sessionStorage.getItem(introKey) === 'shown'; } catch (_) {}
   let introTimer;
   let activeMotion = [];
   let motionUntil = 0;
@@ -162,25 +160,24 @@
   const markIntroduced = () => {
     introduced = true;
     clearTimeout(introTimer);
-    try { sessionStorage.setItem(introKey, 'shown'); } catch (_) {}
   };
   const iconFrames = [
-    [0, 0, 0, 1], [.10, -1, -1, 1.02], [.24, 1, 1, 1.04],
-    [.38, -.8, -.8, 1.035], [.52, .8, .8, 1.025],
-    [.66, -.45, -.45, 1.015], [.80, .45, .45, 1.005], [1, 0, 0, 1]
+    [0, 0, 0, 1], [.10, -2, -3, 1.06], [.24, 2, 3, 1.12],
+    [.38, -1.6, -2.4, 1.10], [.52, 1.6, 2.4, 1.075],
+    [.66, -.9, -1.35, 1.045], [.80, .9, 1.35, 1.015], [1, 0, 0, 1]
   ].map(([offset, x, angle, scale]) => ({offset, transform: `translateY(-50%) translateX(${x}px) rotate(${angle}deg) scale(${scale})`}));
   const feedbackFrames = [
-    [0, 0], [.10, -.65], [.24, .65], [.38, -.52],
-    [.52, .52], [.66, -.29], [.80, .29], [1, 0]
+    [0, 0], [.10, -1], [.24, 1], [.38, -.8],
+    [.52, .8], [.66, -.45], [.80, .45], [1, 0]
   ].map(([offset, x]) => ({offset, transform: `translateX(${x}px)`}));
   const playIdentityPulse = (feedback) => {
     markIntroduced();
     if (reducedMotion.matches || document.visibilityState !== 'visible' || !icons.length || !icons[0].animate) return;
     const now = document.timeline.currentTime;
     if (now === null || now < motionUntil) return;
-    motionUntil = now + 260;
-    activeMotion = icons.map(icon => icon.animate(iconFrames, {duration: 260, easing: 'linear'}));
-    if (feedback) activeMotion.push(feedback.animate(feedbackFrames, {duration: 260, easing: 'linear'}));
+    motionUntil = now + 280;
+    activeMotion = icons.map(icon => icon.animate(iconFrames, {duration: 280, easing: 'linear'}));
+    if (feedback) activeMotion.push(feedback.animate(feedbackFrames, {duration: 280, easing: 'linear'}));
     activeMotion.forEach(animation => { animation.startTime = now; });
   };
   const considerIntroduction = () => {
@@ -191,9 +188,13 @@
     introTimer = setTimeout(() => {
       const current = tagline.getBoundingClientRect();
       if (document.visibilityState === 'visible' && current.top >= 0 && current.bottom <= window.innerHeight) playIdentityPulse();
-    }, 350);
+    }, 450);
   };
-  const readyFonts = document.fonts ? document.fonts.ready : Promise.resolve();
+  // Do not let a stalled external font prevent the introduction indefinitely.
+  const readyFonts = Promise.race([
+    document.fonts ? document.fonts.ready : Promise.resolve(),
+    new Promise(resolve => setTimeout(resolve, 1500))
+  ]);
   readyFonts.then(() => { fontsReady = true; considerIntroduction(); });
   document.addEventListener('visibilitychange', considerIntroduction);
   window.addEventListener('pageshow', considerIntroduction);
@@ -241,7 +242,7 @@
     }
     button.disabled = false;
     if (copied) {
-      status.textContent = 'Copied!';
+      status.textContent = 'Copied! Thank you 😊';
       playIdentityPulse(status);
       button.focus({preventScroll: true});
       feedbackTimer = setTimeout(() => {
