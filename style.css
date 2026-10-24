@@ -139,24 +139,19 @@ footer a { display: inline-flex; align-items: center; min-height: 44px; }
   nav a::before { transition: none; }
 }
 
-/* ---------- identity highlights: soft colour, no layout jump ---------- */
+/* ---------- decorative identity signatures ---------- */
 header .tagline { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0 0.15rem; margin-top: 0.35rem; font-size: 1rem; }
-.identity { position: relative; display: inline-flex; align-items: center; min-height: 44px; padding: 0.35rem 0.65rem 0.35rem 1.8rem; border-radius: 4px; white-space: nowrap; cursor: default; transition: background-color 160ms ease, color 160ms ease; }
-.identity-icon { position: absolute; left: 0.4rem; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; opacity: 0; transition: opacity 160ms ease; }
+.identity { position: relative; display: inline-flex; align-items: center; min-height: 44px; padding: 0.35rem 0.65rem 0.35rem 1.8rem; white-space: nowrap; cursor: default; }
+.identity-icon { position: absolute; left: 0.4rem; top: 50%; transform: translateY(-50%); transform-origin: center; width: 20px; height: 20px; opacity: 1; pointer-events: none; }
 svg.identity-icon { fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.identity-discourse .identity-icon { color: #274a66; }
+.identity-semiotician .identity-icon { color: #6f571c; }
+.identity-gamer .identity-icon { color: #375d4e; }
 .identity-gamer svg { width: 22px; height: 22px; left: 0.25rem; stroke-width: 5; }
 .interrobang { font-family: 'Source Serif 4', Georgia, serif; font-size: 28px; line-height: 20px; text-align: center; }
-.identity:is(:hover, :focus-visible) .identity-icon { opacity: 1; }
-.identity-discourse:is(:hover, :focus-visible) { background: #dde9f2; color: #274a66; }
-.identity-semiotician:is(:hover, :focus-visible) { background: #eee5c3; color: #6f571c; }
-.identity-gamer:is(:hover, :focus-visible) { background: #dfe9df; color: #375d4e; }
-.identity:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; }
 @media (max-width: 620px) {
   header .tagline { flex-direction: column; }
   .identity-separator { display: none; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .identity, .identity-icon { transition: none; }
 }
 
 /* ---------- content-filled edition ---------- */
@@ -392,8 +387,10 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 .header-share .share-trigger:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
 .header-share .share-trigger:disabled { cursor: wait; }
 .header-share .share-trigger:hover .share-button { background: #eeeae1; border-color: var(--accent); }
-.header-share .share-status { position: absolute; right: 0; top: auto; bottom: calc(100% + 0.75rem); transform: none; margin: 0; width: max-content; max-width: calc(100vw - 2.5rem); padding: 0.3rem 0.55rem; border: 1px solid var(--rule); border-radius: 4px; background: var(--bg); color: var(--accent); font-size: 0.85rem; line-height: 1.4; pointer-events: none; text-align: left; }
+.header-share .share-status { position: absolute; right: 0; top: auto; bottom: calc(100% + 0.75rem); transform: none; margin: 0; width: max-content; max-width: calc(100vw - 2.5rem); padding: 0.3rem 0.55rem; border: 1px solid var(--rule); border-radius: 4px; background: var(--bg); color: var(--accent); font-size: 0.85rem; line-height: 1.4; pointer-events: none; text-align: left; z-index: 2; opacity: 1; transition: opacity 120ms ease-out; }
 .header-share .share-status:empty { visibility: hidden; }
+.header-share .share-status.is-fading { opacity: 0; }
+@media (prefers-reduced-motion: reduce) { .header-share .share-status { transition: none; } }
 .share-dialog { width: min(28rem, calc(100vw - 2.5rem)); max-width: none; margin: auto; padding: 1.25rem; border: 1px solid var(--rule); border-radius: 6px; background: var(--bg); color: var(--text); font: inherit; text-align: left; }
 .share-dialog::backdrop { background: rgba(0, 0, 0, 0.25); }
 .share-dialog-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 0.75rem; }

@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=shared-header-width-r23">
+<link rel="stylesheet" href="style.css?v=identity-pulse-r27">
 </head>
 <body id="top">
 <div class="wrap">
@@ -36,11 +36,11 @@
 </div>
   </div>
   <p class="tagline" aria-label="Discourse Analyst, Social Semiotician, Gamer">
-    <span class="identity identity-discourse" tabindex="0"><svg class="identity-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 4h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="M7 9h10M7 13h6"/></svg><span>Discourse Analyst</span></span>
+    <span class="identity identity-discourse"><svg class="identity-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 4h14a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-9l-5 4v-4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z"/><path d="M7 9h10M7 13h6"/></svg><span>Discourse Analyst</span></span>
     <span class="identity-separator" aria-hidden="true">·</span>
-    <span class="identity identity-semiotician" tabindex="0"><span class="identity-icon interrobang" aria-hidden="true">‽</span><span>Social Semiotician</span></span>
+    <span class="identity identity-semiotician"><span class="identity-icon interrobang" aria-hidden="true">‽</span><span>Social Semiotician</span></span>
     <span class="identity-separator" aria-hidden="true">·</span>
-    <span class="identity identity-gamer" tabindex="0"><svg class="identity-icon" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path d="M28 29c-11 0-15 13-19 29-3 13-2 20 4 23 7 3 13-10 19-12h36c6 2 12 15 19 12 6-3 7-10 4-23-4-16-8-29-19-29z"/><path d="M29 41v18M20 50h18"/><circle cx="71" cy="45" r="3.4"/><circle cx="80" cy="54" r="3.4"/></svg><span>Gamer</span></span>
+    <span class="identity identity-gamer"><svg class="identity-icon" viewBox="0 0 100 100" aria-hidden="true" focusable="false"><path d="M28 29c-11 0-15 13-19 29-3 13-2 20 4 23 7 3 13-10 19-12h36c6 2 12 15 19 12 6-3 7-10 4-23-4-16-8-29-19-29z"/><path d="M29 41v18M20 50h18"/><circle cx="71" cy="45" r="3.4"/><circle cx="80" cy="54" r="3.4"/></svg><span>Gamer</span></span>
   </p>
   <nav>
     <ul>
@@ -148,7 +148,65 @@
   const fallback = document.querySelector('#share-fallback');
   const field = document.querySelector('#share-link');
   const shareText = 'Haoning Li, QMUL — https://haoning-li.github.io/teaching-service.html';
+  // Decorative identity motion: one introduction per tab, plus successful shares.
+  const icons = [...document.querySelectorAll('.identity-icon')];
+  const tagline = document.querySelector('.tagline');
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const introKey = 'identity-introduction-r27';
+  let introduced = false;
+  try { introduced = sessionStorage.getItem(introKey) === 'shown'; } catch (_) {}
+  let introTimer;
+  let activeMotion = [];
+  let motionUntil = 0;
+  let fontsReady = false;
+  const markIntroduced = () => {
+    introduced = true;
+    clearTimeout(introTimer);
+    try { sessionStorage.setItem(introKey, 'shown'); } catch (_) {}
+  };
+  const iconFrames = [
+    [0, 0, 0, 1], [.10, -1, -1, 1.02], [.24, 1, 1, 1.04],
+    [.38, -.8, -.8, 1.035], [.52, .8, .8, 1.025],
+    [.66, -.45, -.45, 1.015], [.80, .45, .45, 1.005], [1, 0, 0, 1]
+  ].map(([offset, x, angle, scale]) => ({offset, transform: `translateY(-50%) translateX(${x}px) rotate(${angle}deg) scale(${scale})`}));
+  const feedbackFrames = [
+    [0, 0], [.10, -.65], [.24, .65], [.38, -.52],
+    [.52, .52], [.66, -.29], [.80, .29], [1, 0]
+  ].map(([offset, x]) => ({offset, transform: `translateX(${x}px)`}));
+  const playIdentityPulse = (feedback) => {
+    markIntroduced();
+    if (reducedMotion.matches || document.visibilityState !== 'visible' || !icons.length || !icons[0].animate) return;
+    const now = document.timeline.currentTime;
+    if (now === null || now < motionUntil) return;
+    motionUntil = now + 260;
+    activeMotion = icons.map(icon => icon.animate(iconFrames, {duration: 260, easing: 'linear'}));
+    if (feedback) activeMotion.push(feedback.animate(feedbackFrames, {duration: 260, easing: 'linear'}));
+    activeMotion.forEach(animation => { animation.startTime = now; });
+  };
+  const considerIntroduction = () => {
+    clearTimeout(introTimer);
+    if (introduced || !fontsReady || !tagline || document.visibilityState !== 'visible') return;
+    const rect = tagline.getBoundingClientRect();
+    if (rect.top < 0 || rect.bottom > window.innerHeight) return;
+    introTimer = setTimeout(() => {
+      const current = tagline.getBoundingClientRect();
+      if (document.visibilityState === 'visible' && current.top >= 0 && current.bottom <= window.innerHeight) playIdentityPulse();
+    }, 350);
+  };
+  const readyFonts = document.fonts ? document.fonts.ready : Promise.resolve();
+  readyFonts.then(() => { fontsReady = true; considerIntroduction(); });
+  document.addEventListener('visibilitychange', considerIntroduction);
+  window.addEventListener('pageshow', considerIntroduction);
+  window.addEventListener('scroll', considerIntroduction, {passive: true});
+  window.addEventListener('resize', considerIntroduction, {passive: true});
+  reducedMotion.addEventListener('change', () => {
+    if (reducedMotion.matches) {
+      activeMotion.forEach(animation => animation.cancel());
+      motionUntil = 0;
+    }
+  });
   let feedbackTimer;
+  let clearFeedbackTimer;
   fallback.querySelector('.share-dialog-close').addEventListener('click', () => fallback.close());
   fallback.addEventListener('close', () => button.focus({preventScroll: true}));
   fallback.addEventListener('click', (event) => {
@@ -157,6 +215,8 @@
   });
   button.addEventListener('click', async () => {
     clearTimeout(feedbackTimer);
+    clearTimeout(clearFeedbackTimer);
+    status.classList.remove('is-fading');
     button.disabled = true;
     status.textContent = '';
     if (fallback.open) fallback.close();
@@ -181,9 +241,16 @@
     }
     button.disabled = false;
     if (copied) {
-      status.textContent = 'Copied — ready to share!';
+      status.textContent = 'Copied!';
+      playIdentityPulse(status);
       button.focus({preventScroll: true});
-      feedbackTimer = setTimeout(() => { status.textContent = ''; }, 2000);
+      feedbackTimer = setTimeout(() => {
+        status.classList.add('is-fading');
+        clearFeedbackTimer = setTimeout(() => {
+          status.textContent = '';
+          status.classList.remove('is-fading');
+        }, 120);
+      }, 2000);
     } else {
       fallback.showModal();
       field.focus({preventScroll: true});
